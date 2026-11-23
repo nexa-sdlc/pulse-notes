@@ -1,0 +1,21 @@
+name: pulse-testbed
+services:
+  app:
+    build:
+      context: ..
+      args:
+        APP_COMMIT: ${APP_COMMIT:-dev}
+    image: pulse-testbed:${APP_COMMIT:-dev}
+    ports:
+      - "5450:3000"
+    volumes:
+      - pulse-data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
+volumes:
+  pulse-data:
