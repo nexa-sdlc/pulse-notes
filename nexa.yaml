@@ -1,0 +1,33 @@
+# nexa.yaml, drafted by Nexa from this repo's files (heuristics only; no AI was used).
+# Check every line marked "guess" or "custom". Nexa probes each capability before it relies on it.
+version: 1
+project: pulse
+repo:
+  role: fullstack                     # guess: see the draft notes for why
+  default_branch: main
+stack:
+  languages: [typescript]
+  frameworks: [react, vite, fastify]
+  package_manager: pnpm
+
+setup:                              # run once per fresh task clone, before any capability
+  - pnpm install --frozen-lockfile
+
+capabilities:
+  build: { mode: standard, command: pnpm run build }  # detected: the "build" script
+  lint: { mode: standard, command: pnpm run lint }  # detected: the "lint" script
+  typecheck: { mode: standard, command: pnpm run typecheck }  # detected: the "typecheck" script
+  unit:  # custom: the test runner is not vitest or jest, so JUnit output is not configured
+    mode: custom
+    command: pnpm run test
+  e2e:  # custom: Playwright found but JUnit/app details are not confirmed
+    mode: custom
+    command: pnpm exec playwright test
+  docs: { mode: none }  # A docs/ folder not detected; add it by hand
+  migrations: { mode: none }  # no migration tool detected
+  deploy:
+    mode: none                      # the project route decides deploys; set a repo-level override here if needed
+
+agent_guide: NEXA.md                # conventions file agents read first (a stub is drafted next to this file)
+protected:                          # changes here always need human approval
+  - "**/.env*"
