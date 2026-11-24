@@ -20,9 +20,7 @@ capabilities:
   unit:  # custom: the test runner is not vitest or jest, so JUnit output is not configured
     mode: custom
     command: pnpm run test
-  e2e:  # custom: Playwright found but JUnit/app details are not confirmed
-    mode: custom
-    command: pnpm exec playwright test
+  e2e: { mode: none }  # the Playwright smoke (e2e/smoke.mjs) needs the deployed app (BASE_URL): it runs after deploy, in deploy/smoke.sh
   docs: { mode: none }  # A docs/ folder not detected; add it by hand
   migrations: { mode: none }  # no migration tool detected
   deploy:
